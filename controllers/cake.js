@@ -1,4 +1,5 @@
-const { Cake, Category } = require('../models')
+const { Cake, Category } = require('../models'),
+  { deleteFileFromGCS } = require('../helpers/images')
 
 module.exports = {
   newCake ( req, res, next ) {
@@ -15,6 +16,7 @@ module.exports = {
   },
   updateDescription (req, res, next) {
     const { description } = req.body;
+    console.log(req.body)
     Cake.findByIdAndUpdate(req.params.id, { description }, { new: true }, (err, cake) => {
       if(err) next(err);
       else res.status(200).json({ cake })
@@ -25,6 +27,16 @@ module.exports = {
     Cake.findByIdAndUpdate(req.params.id, { $push: { CakeImage } }, { new: true }, (err, cake) => {
       if(err) next(err);
       else res.status(200).json({ cake })
+    })
+  },
+  removePicture (req, res, next) {
+    const CakeImage = req.body;
+    Cake.findByIdAndUpdate(req.params.id, { $pull: { CakeImage } }, { new: true }, (err, cake) => {
+      if(err) next(err);
+      else {
+        deleteFileFromGCS(CakeImage);
+        res.status(200).json({ cake })
+      }
     })
   },
   getOneCakeByCategory ( req, res, next ) {
