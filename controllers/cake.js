@@ -16,7 +16,6 @@ module.exports = {
   },
   updateDescription (req, res, next) {
     const { description } = req.body;
-    console.log(req.body)
     Cake.findByIdAndUpdate(req.params.id, { description }, { new: true }, (err, cake) => {
       if(err) next(err);
       else res.status(200).json({ cake })
@@ -24,13 +23,13 @@ module.exports = {
   },
   updatePicture ( req, res, next ) {
     const CakeImage =  req.file.cloudStoragePublicUrl;
-    Cake.findByIdAndUpdate(req.params.id, { $push: { CakeImage } }, { new: true }, (err, cake) => {
+    Cake.findOneAndUpdate({ Category: req.params.id }, { $push: { CakeImage } }, { new: true }, (err, cake) => {
       if(err) next(err);
       else res.status(200).json({ cake })
     })
   },
   removePicture (req, res, next) {
-    const CakeImage = req.body;
+    const { CakeImage } = req.body;
     Cake.findByIdAndUpdate(req.params.id, { $pull: { CakeImage } }, { new: true }, (err, cake) => {
       if(err) next(err);
       else {

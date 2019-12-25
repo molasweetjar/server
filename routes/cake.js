@@ -8,7 +8,7 @@ const Route = require('express').Router(),
 Route.get('/:id', getOneCakeByCategory);
 Route.post('/', authentication, authorAdmin, newCake);
 Route.patch('/:id', authentication, authorAdmin, images.multer.single('image'), images.sendUploadToGCS, updatePicture);
-Route.post('/removepic/:id', authentication, authorAdmin, removePicture);
+Route.patch('/removepic/:id', authentication, authorAdmin, removePicture);
 Route.post('/description/:id', authentication, authorAdmin, updateDescription);
 
 module.exports = Route;
