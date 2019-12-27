@@ -1,5 +1,5 @@
 const { model, Schema } = require('mongoose');
 
-module.exports = model('testi', new Schema({
+module.exports = model('testimony', new Schema({
   testi_image: String
 }, { versionKey: false }))

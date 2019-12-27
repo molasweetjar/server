@@ -4,7 +4,6 @@ const { Testi } = require('../models'),
 module.exports = {
   newTesti ( req, res, next ) {
     const testi_image =  req.file.cloudStoragePublicUrl;
-    console.log(testi_image)
     Testi.create({ testi_image }, (err, testi) => {
       if(err) next(err);
       else res.status(201).json({ testi })
